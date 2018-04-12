@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+ENVIRONMENT=$1
+DOMAIN=$2
+COMPOSE_CMD="docker-compose -f dev.yml"
+
+export AWS_PROFILE=terraform-gifz-app &&
+mv .env .env.bak &&
+aws s3 cp s3://terraform-gifz-app/$ENVIRONMENT/.env .env &&
+$COMPOSE_CMD build &&
+$COMPOSE_CMD run --rm app yarn build &&
+mv .env.bak .env &&
+aws s3 sync dist/ s3://$DOMAIN --delete --cache-control max-age=31536000 &&
+aws s3 cp s3://$DOMAIN/index.html s3://$DOMAIN/index.html --metadata-directive REPLACE --cache-control max-age=0,no-cache,must-revalidate
+exit 0

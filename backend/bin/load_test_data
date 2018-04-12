@@ -1,0 +1,22 @@
+#!/bin/sh
+set -e
+
+TEST_USER_EMAIL=$1
+
+export AWS_PROFILE=terraform-gifz-api &&
+# aws ecs run-task \
+#   --cluster gifz-api-production-ecs-cluster \
+#   --task-definition gifz-api-production-ecs-django:4 \
+#   --launch-type FARGATE \
+#   --overrides "{\"containerOverrides\": [{\"name\": \"gifz-api-production-ecs-django\",\"command\": [\"manage\", \"create_test_user\", \"$TEST_USER_EMAIL\"]}]}" \
+#   --network-configuration "awsvpcConfiguration={subnets=[subnet-8e9780d3],securityGroups=[sg-bcbd67f5],assignPublicIp=ENABLED}" \
+#   --count 1 &&
+
+aws ecs run-task \
+  --cluster gifz-api-production-ecs-cluster \
+  --task-definition gifz-api-production-ecs-django:5 \
+  --launch-type FARGATE \
+  --overrides "{\"containerOverrides\": [{\"name\": \"gifz-api-production-ecs-django\",\"command\": [\"manage\", \"populate_db_from_dir\", \"./test_data/\"]}]}" \
+  --network-configuration "awsvpcConfiguration={subnets=[subnet-8e9780d3],securityGroups=[sg-bcbd67f5],assignPublicIp=ENABLED}" \
+  --count 1 &&
+exit 0

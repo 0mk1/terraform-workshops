@@ -1,0 +1,39 @@
+version: '3.3'
+services:
+  postgres:
+    image: postgres:9.6-alpine
+    environment:
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+  redis:
+    image: redis:4.0.8-alpine
+  django:
+    build: .
+    image: gifz-api
+    command: runserver
+    volumes:
+      - .:/project/code
+      - media:/project/media
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+      - celery-worker
+    env_file: .env
+  celery-worker:
+    image: gifz-api
+    command: celery
+    volumes:
+      - .:/project/code
+      - media:/project/media
+    depends_on:
+      - postgres
+      - redis
+    env_file: .env
+volumes:
+  pg-data:
+    driver: local
+  media:
+    driver: local

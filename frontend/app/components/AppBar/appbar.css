@@ -1,0 +1,12 @@
+.root {
+  flex-grow: 1;
+}
+
+.flex {
+  flex: 1;
+}
+
+.link {
+  color: inherit;
+  text-decoration: none;
+}

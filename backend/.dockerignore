@@ -1,0 +1,9 @@
+.cache
+.coverage
+.git
+.mypy_cache/
+Makefile
+infra
+manage-compose
+tags
+.terraform

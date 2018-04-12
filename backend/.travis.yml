@@ -1,0 +1,35 @@
+sudo: required
+language: python
+
+services:
+  - docker
+
+env:
+  - DOCKER_COMPOSE_VERSION=1.18.0
+  - IMAGE_NAME=gifz_api_ci_cache
+  - REGISTRY=$AWS_ACCOUNT.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+  - REPO=$AWS_ACCOUNT.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME
+
+before_install:
+  # Installing newest docker-ce
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+  # Installing docker-compose
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+install:
+  - docker pull $(REPO):$(TRAVIS_BRANCH)
+  - docker-compose -f dev.yml build --cache-from $(REPO):$(TRAVIS_BRANCH)
+
+script:
+  - make
+
+# TODO: pushing to ECR when master or develop is ok
+# after_success:
+#   - if [ "$TRAVIS_BRANCH" == "master" ]; then
+#     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+#     docker push USER/REPO;
+#     fi

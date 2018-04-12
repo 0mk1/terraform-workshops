@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+export AWS_PROFILE=terraform-gifz-api &&
+aws ecs run-task \
+  --cluster gifz-api-production-ecs-cluster \
+  --task-definition gifz-api-production-ecs-django:4 \
+  --launch-type FARGATE \
+  --overrides "{\"containerOverrides\": [{\"name\": \"gifz-api-production-ecs-django\",\"command\": [\"bootstrap\"]}]}" \
+  --network-configuration "awsvpcConfiguration={subnets=[subnet-8e9780d3],securityGroups=[sg-bcbd67f5],assignPublicIp=ENABLED}" \
+  --count 1 &&
+exit 0

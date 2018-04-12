@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+REGISTRY_URL="669217042505.dkr.ecr.us-east-1.amazonaws.com/gifz-api"
+
+export AWS_PROFILE=terraform-gifz-api &&
+make build &&
+docker tag gifz-api:latest $REGISTRY_URL:latest &&
+eval $(aws ecr get-login --no-include-email) &&
+docker push $REGISTRY_URL:latest
+exit 0

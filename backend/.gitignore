@@ -1,0 +1,9 @@
+*.pyc
+.ash_history
+.mypy_cache/
+.cache
+__pycache__
+.DS_Store
+.coverage
+.env
+.terraform

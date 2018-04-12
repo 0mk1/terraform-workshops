@@ -1,0 +1,18 @@
+.save-button {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dragdrop-container {
+  margin: 2rem 0;
+  display: flex;
+}
+
+.dragdrop-field {
+  display: flex;
+  flex: 1;
+  border: 2px #2196f3 dashed;
+  padding: 5rem;
+  justify-content: center;
+}

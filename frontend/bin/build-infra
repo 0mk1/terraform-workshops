@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+ENVIRONMENT=$1
+
+export AWS_PROFILE=terraform-gifz-app &&
+cd ./infra/envs/$ENVIRONMENT/ &&
+terraform init &&
+terraform apply &&
+exit 0

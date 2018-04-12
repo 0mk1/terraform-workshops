@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+docker-compose -f dev.yml run --rm django manage $@
+exit 0
