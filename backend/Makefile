@@ -51,4 +51,4 @@ logs:
 	$(COMPOSE_CMD) logs -f
 
 build-infra-production:
-	./bin/build-infra production
+	./bin/build-infra
