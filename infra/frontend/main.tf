@@ -4,6 +4,7 @@ variable "app_name" {}
 resource "aws_s3_bucket" "this" {
   bucket = "${var.app_name}-frontend"
   acl    = "private"
+  force_destroy = true
 
   website {
     index_document = "index.html"
@@ -40,6 +41,7 @@ resource "aws_s3_bucket_policy" "this" {
 resource "aws_s3_bucket" "logs" {
   bucket = "${var.app_name}-frontend-logs"
   acl    = "log-delivery-write"
+  force_destroy = true
 }
 
 resource "aws_cloudfront_origin_access_identity" "this" {}

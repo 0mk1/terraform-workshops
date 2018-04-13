@@ -4,6 +4,7 @@ variable "app_name" {}
 resource "aws_s3_bucket" "this" {
   bucket = "${var.app_name}-static"
   acl    = "private"
+  force_destroy = true
 }
 
 data "aws_iam_policy_document" "this" {
