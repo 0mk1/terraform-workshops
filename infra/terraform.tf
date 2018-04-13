@@ -17,6 +17,10 @@ variable "app_name" {
   default = "gifz"
 }
 
+variable "your_email" {
+  default = "TYPE your email"
+}
+
 provider "aws" {
   region = "${var.region}"
 }
@@ -110,7 +114,7 @@ module "django_task_definition" {
   cdn_endpoint = "${module.cdn.endpoint}"
   s3_bucket_name = "${module.cdn.bucket_name}"
   allowed_hosts = "${module.ecs_alb.domain}"
-  default_from_email = "m.kamycki@merixstudio.com"
+  default_from_email = "${var.your_email}"
 }
 
 resource "aws_security_group" "django" {
@@ -168,7 +172,7 @@ module "celery_task_definition" {
   mail_password = "${module.mail.smtp_password}"
   cdn_endpoint = "${module.cdn.endpoint}"
   s3_bucket_name = "${module.cdn.bucket_name}"
-  default_from_email = "m.kamycki@merixstudio.com"
+  default_from_email = "${var.your_email}"
 }
 
 resource "aws_security_group" "celery" {
